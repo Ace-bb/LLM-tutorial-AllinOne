@@ -1,0 +1,15 @@
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+Collecting bitsandbytes
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/f8/1a/3cbdd70ce276085602ffe7e4f52753a41c43464053eec9e76b3dd065e4c9/bitsandbytes-0.43.3-py3-none-manylinux_2_24_x86_64.whl (137.5 MB)
+Requirement already satisfied: torch in /root/.conda/envs/ailab/lib/python3.10/site-packages (from bitsandbytes) (2.1.2)
+Requirement already satisfied: numpy in /root/.conda/envs/ailab/lib/python3.10/site-packages (from bitsandbytes) (1.26.4)
+Requirement already satisfied: filelock in /root/.conda/envs/ailab/lib/python3.10/site-packages (from torch->bitsandbytes) (3.13.1)
+Requirement already satisfied: typing-extensions in /root/.conda/envs/ailab/lib/python3.10/site-packages (from torch->bitsandbytes) (4.11.0)
+Requirement already satisfied: sympy in /root/.conda/envs/ailab/lib/python3.10/site-packages (from torch->bitsandbytes) (1.12)
+Requirement already satisfied: networkx in /root/.conda/envs/ailab/lib/python3.10/site-packages (from torch->bitsandbytes) (3.3)
+Requirement already satisfied: jinja2 in /root/.conda/envs/ailab/lib/python3.10/site-packages (from torch->bitsandbytes) (3.1.4)
+Requirement already satisfied: fsspec in /root/.conda/envs/ailab/lib/python3.10/site-packages (from torch->bitsandbytes) (2024.5.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /root/.conda/envs/ailab/lib/python3.10/site-packages (from jinja2->torch->bitsandbytes) (2.1.3)
+Requirement already satisfied: mpmath>=0.19 in /root/.conda/envs/ailab/lib/python3.10/site-packages (from sympy->torch->bitsandbytes) (1.3.0)
+Installing collected packages: bitsandbytes
+Successfully installed bitsandbytes-0.43.3
