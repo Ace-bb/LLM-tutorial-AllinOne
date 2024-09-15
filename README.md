@@ -46,6 +46,11 @@
     - DeepSpeed
 
 
+![](./中心主题.pdf)
+<iframe src="./中心主题.pdf&embedded=true" style="width:100%; height:600px;" frameborder="0"></iframe>
+
+
+
 ## 亲测优质学习资源
 ### Github仓库
 
