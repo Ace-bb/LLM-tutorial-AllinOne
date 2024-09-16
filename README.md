@@ -6,13 +6,38 @@
 
 &emsp;&emsp;本项目旨在整合网上已有的优质大语言模型学习资源，面向于刚刚入门开始学习LLM的同学，也适合有工作经验的大佬来查阅相关资料，当然也非常欢迎有大佬来分享自己的大模型经验。本项目的模板是能够尽可能多的囊括大语言模型各方面的知识，包括NLP基础知识，LLM基本原理，LLM应用开发，LLM开发进阶，Prompt工程，Agent开发，大模型预训练和微调，人类对齐等方面。囊括原理的同时，也会包含详细的动手教程，帮助每一位学习者、研究者更快速的上手大语言模型领域。
 
+# Markdown {.tabset}
+## Plots
+\```{r}
+1
+\```
+
+## Tables
+\```{r}
+head(mtcars)
+\```
+
+{{< tabs "uniqueid" >}}
+{{< tab "MacOS" >}} # MacOS内容文本 {{< /tab >}}
+{{< tab "Linux" >}} # Linux内容文本 {{< /tab >}}
+{{< tab "Windows" >}} # Windows内容文本 {{< /tab >}}
+{{< /tabs >}}
+
+
 ## 项目计划囊括内容
 1. NLP基础
 2. 大模型核心原理
+    - 模型基础
+        - 注意力机制
+        - 位置编码
+        - 激活函数
+        - 归一化
     - Transformer架构
-    - Self-Attention
-    - Multi-head Attention
-    ...
+    - 模型解码策略
+    - 参数详解
+    - 扩展法则
+    - 涌现能力
+    
 3. Prompt工程
     - API调用
     - 提示词工程基础
@@ -23,33 +48,54 @@
     - GPTs
     - Langchain
     - Agent
-5. 大模型私有化部署
-    - HuggingFace开源社区
-    - 热门模型部署实战
-6. 大模型微调
-    - 数据集构造
-    - 微调原理
-    - 高效微调方法LoRA， QLora，ptuning，prompt-tuning等
-    - 调优策略
-7. 大模型预训练
-    - 预训练策略
+5. 数据处理
+    - 预处理
+        - 质量过滤
+        - 数据去重
+    - 词元化
+        - BPE分词
+        - WordPiece分词
+        - Unigram分词
+    - 数据调度
+6. 大模型预训练
+    - 预训练任务
+        - 语言建模
+        - 去噪自编码
+        - 混合自编码
+    - 预训练技术
+        - 优化参数设置
+        - 稳定化技术
+        - 可扩展预训练技术
+    - 模型参数计算
     - 预训练实操
+7. 指令微调
+    - 微调数据集构造
+    - 指令微调训练策略
+    - 参数高效的微调方法
 8. 人类对齐
-    - 为什么需要对齐
-    - 对齐技术介绍
-    - 强化学习
-    - PPO，DPO
+    - 对其标准
     - RLHF
-9. 模型量化
-    - 加速训练技术
-    - FlashAttention、3D Parallel Training， ZeRO
-    - DeepSpeed
+    - DPO
+9. 优化加速
+    - 解码加速算法
+    - 低资源部署策略
+10. 评估方法
 
+## 各部分思维导图
+### 大语言模型基础
+![](./static/frame_img/LLM基础知识.jpg)
 
-![](./中心主题.pdf)
-<iframe src="./中心主题.pdf&embedded=true" style="width:100%; height:600px;" frameborder="0"></iframe>
+### 预训练
+![](./static/frame_img/LLM预训练知识.jpg)
 
+### 指令微调
+![](./static/frame_img/LLM微调.jpg)
 
+### 人类对其
+![](./static/frame_img/LLM人类对齐.jpg)
+
+### 优化加速
+![](./static/frame_img/推理加速.jpg)
 
 ## 亲测优质学习资源
 ### Github仓库
