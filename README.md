@@ -121,3 +121,4 @@ head(mtcars)
 &emsp;&emsp; 非常不错的一本LLM综述书籍，强烈建议阅读，非常详细的讲述了LLM的基础知识和发展状况。
 3. [大模型快速上手](https://github.com/DjangoPeng/LLM-quickstart)
 &emsp;&emsp; 这里面各种大语言模型微调策略，同时有示例可以正常运行，强烈建议作为上手练习使用
+4. [Build a Large Language Model (From Scratch)](https://github.com/rasbt/LLMs-from-scratch)
