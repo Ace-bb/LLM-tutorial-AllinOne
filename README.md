@@ -6,23 +6,25 @@
 
 &emsp;&emsp;本项目旨在整合网上已有的优质大语言模型学习资源，面向于刚刚入门开始学习LLM的同学，也适合有工作经验的大佬来查阅相关资料，当然也非常欢迎有大佬来分享自己的大模型经验。本项目的模板是能够尽可能多的囊括大语言模型各方面的知识，包括NLP基础知识，LLM基本原理，LLM应用开发，LLM开发进阶，Prompt工程，Agent开发，大模型预训练和微调，人类对齐等方面。囊括原理的同时，也会包含详细的动手教程，帮助每一位学习者、研究者更快速的上手大语言模型领域。
 
-# Markdown {.tabs}
-## Plots
-\```{r}
-1
-\```
-
-## Tables
-\```{r}
-head(mtcars)
-\```
-
-{{< tabs "uniqueid" >}}
-{{< tab "MacOS" >}} # MacOS内容文本 {{< /tab >}}
-{{< tab "Linux" >}} # Linux内容文本 {{< /tab >}}
-{{< tab "Windows" >}} # Windows内容文本 {{< /tab >}}
-{{< /tabs >}}
-
+## 学习路线
+1. 扎实NLP基础 \
+   重点：**Pytorch**知识， **MLP**，**Word2Vec**，**CNN**建议也了解一下
+2. Transformer \
+   看这个学习：[https://github.com/Ace-bb/Transformer](https://github.com/Ace-bb/Transformer)
+   Transformer多看多学，尽可能掌握细节。
+3. 主流模型架构 \
+   重点：**LlaMA**，**Qwen**，**InternVL**
+4. Prompt工程、应用开发 \
+5. 预训练+微调 \
+   重点：**LoRA**
+6. 分布式训练 \
+   重点：**DP**，**DDP**
+7. 人类对齐 \
+   重点：**DPO**
+8. 推理部署 \
+   重点：**量化方法**，**QAT**，**PTQ**，**FlashAttention**，**PageAttention**
+9. 多模态相关 \
+   重点：**视觉模型**，**VIT**，**CLIP**
 
 ## 项目计划囊括内容
 1. NLP基础
