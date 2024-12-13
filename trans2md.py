@@ -83,7 +83,7 @@ def parse_notebook_content(folder_path, notebook_name):
     
     return artical_content
 
-def parse_notebook(note_book_path):
+def parse_notebook():
     for l_1_folder in os.listdir("./"):
         if l_1_folder==".git": continue
         if not os.path.isdir(f"./{l_1_folder}"): continue
@@ -91,24 +91,28 @@ def parse_notebook(note_book_path):
             if l_2_folder=="1.2-Transformer": continue
             if not os.path.isdir(f"./{l_1_folder}/{l_2_folder}"): continue
             for f_name in os.listdir(f"./{l_1_folder}/{l_2_folder}"):
+                note_book_path = f"./{l_1_folder}/{l_2_folder}/{f_name}"
                 # if f_name !="LLaMA.ipynb": continue
                 try:
-                    if not f_name.endswith(".ipynb"): continue
-                    # notebook_path = f"./{l_1_folder}/{l_2_folder}/{f_name}"
-                    artical_content = parse_notebook_content(f"./{l_1_folder}/{l_2_folder}", f_name)
-                    for _id, item in enumerate(artical_content):
-                        if item==None:
-                            print(_id)
-                            artical_content[_id] = '\n'
-                    res_save_path = "repo/parse_notebooks/" + note_book_path.replace('.ipynb', '.md')
-                    base_dir = os.path.dirname(res_save_path)
-                    if not os.path.exists(base_dir): os.makedirs(base_dir)
-                    with open(res_save_path, 'w', encoding='utf-8') as f:
-                        f.write(''.join(artical_content))
+                    if f_name.endswith(".ipynb"): 
+                        artical_content = parse_notebook_content(f"./{l_1_folder}/{l_2_folder}", f_name)
+                        for _id, item in enumerate(artical_content):
+                            if item==None:
+                                print(_id)
+                                artical_content[_id] = '\n'
+                        res_save_path = "repo/parse_notebooks/" + note_book_path.replace('.ipynb', '.md')
+                        base_dir = os.path.dirname(res_save_path)
+                        if not os.path.exists(base_dir): os.makedirs(base_dir)
+                        with open(res_save_path, 'w', encoding='utf-8') as f:
+                            f.write(''.join(artical_content))
+                    elif f_name.endswith('.md'):
+                        ...
+                    else:
+                        continue
                 except:
                     continue
 
 if __name__ == '__main__':
-    parse_notebook('2-主流模型架构/2.2-LLaMA/LLaMA.ipynb')
+    parse_notebook()
     # access_token = get_weixin_access_token()['access_token'] #"85_5jStf6LK3xA73EyKauZR72t4fjpcD_Bkv96N2Y3u8Xz0iN7UnEA7DY0y9oBBlF5y3lCuVoLvgSr_WUKuht_tiDHZV3vBK9TtGmf2kneCcw6sRp-as9GzEDBJ1PEZTLaAJATNF" # get_weixin_access_token()['access_token']
     # print(upload_image_to_weixin('image.png', access_token))
