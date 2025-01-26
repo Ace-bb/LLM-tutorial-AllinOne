@@ -83,6 +83,15 @@ def parse_notebook_content(folder_path, notebook_name):
     
     return artical_content
 
+def parse_md(folder_path, notebook_name):
+    md_path = f"{folder_path}/{notebook_name}"
+    with open(md_path, 'r', encoding='utf-8') as f:
+        md_content = f.readlines()
+    artical_content = []
+    for rid, row in enumerate(md_content):
+        if row.strip().startswith('!['):
+            artical_content.append(trans_cell_one_img(row, folder_path))
+        
 def parse_notebook():
     for l_1_folder in os.listdir("./"):
         if l_1_folder==".git": continue

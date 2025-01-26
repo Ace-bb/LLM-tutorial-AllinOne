@@ -1,0 +1,11 @@
+torch 
+numpy 
+evaluate 
+tqdm
+transformers 
+accelerate 
+datasets 
+trl 
+git+https://github.com/huggingface/peft.git
+bitsandbytes 
+entencepiece

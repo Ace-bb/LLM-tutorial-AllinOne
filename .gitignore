@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+12-实操/预训练实操/pretrain_data_cache
 
 # C extensions
 *.so
