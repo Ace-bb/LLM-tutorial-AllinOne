@@ -1,5 +1,48 @@
 
 # Prompt tuning
+Prompt Tuning 是一种软提示方法，出自论文《The Power of Scale for Parameter-Efficient Prompt Tuning》（[论文链接](https://arxiv.org/abs/2104.08691)）。它的目标是解决以下两个问题：
+
+1. **全量微调的高开销和高成本**：传统方法需要对整个模型进行微调，这既耗时又耗费资源。
+2. **人工设计提示词的成本高且效果不理想**：手动设计提示词不仅费时费力，效果还往往不尽如人意。
+
+Prompt Tuning 的核心思想是：
+- **学习提示词而非手动设计**：通过训练自动学习提示词，而不是依赖人工设计。
+- **仅更新提示词部分的参数**：在训练过程中，只更新与提示词相关的参数，保持模型原始权重不变。
+
+这样做的好处是：
+- **模型复用性高**：同一个模型可以轻松应用于多个任务，无需重新训练整个模型。
+- **效率大幅提升**：既节省了资源，又提高了模型的使用灵活性。
+
+
+如图8所示，Prompt Tuning 的做法是为每个任务定义一组特定的 Prompt token（长度为 $k$），然后在输入层把这些 token 和数据拼接在一起作为输入。具体来说，就是把原本的输入 $X=\ [x_{1},\,x_{2},...,\,x_{m}]$ 变成 $X^{\prime}=\;[x_{1}^{\prime}$ $x_{2}^{\prime},...,\,x_{\mathrm{k}}^{\prime};\,x_{1},\,x_{2},...,\,x_{m}\big]$，然后通过公式 $\pmb{Y}=\pmb{W}\pmb{X}^{\prime}$ 进行计算。
+
+这种方法有以下几个特点：
+1. **模型参数不变**：整个预训练模型的参数保持不变，不需要重新训练。
+2. **仅更新少量参数**：只允许在每个下游任务中更新额外的 $k$ 个 token。
+3. **高效微调**：通过增加不到 $0.01\%$ 的任务特定参数，就可以微调超过10亿个参数的模型。
+
+简单来说，Prompt Tuning 是一种非常高效的微调方法，既保留了预训练模型的强大能力，又只需要极少的额外参数就能适应新任务。
+
+![](https://gitee.com/Ace_bb/static_resource_cloud/raw/master/LLMBook/LLMBOOK1/images/878d61ab49786bdb63e62b6883db529359e954d07a6f5cc27566d279a98ee2a5.jpg)
+图8 Prompt Tuning 中任务特定token 与输入提示词拼接示意图
+
+实验表明，随着预训练模型的参数量增加，`Prompt Tuning` 的效果会逐渐接近全量微调的效果。此外，`Prompt token` 的初始化方法和长度也会影响模型的性能。通过消融实验，我们发现：
+
+1. **初始化方法的影响**：
+   - 使用类标签初始化模型的效果比随机初始化或使用样本词汇表初始化更好。
+   - 但随着模型参数规模的增加，这种优势会逐渐消失。
+
+2. **Prompt token 长度的影响**：
+   - 当 `Prompt token` 的长度在 20 左右时，模型的表现最好。
+   - 不过，增加 `Prompt token` 的长度对模型性能的影响并不显著。
+
+总结来说，模型参数量的增加会让 `Prompt Tuning` 的效果更接近全量微调，而 `Prompt token` 的初始化和长度虽然有一定影响，但随着模型规模的增大，这些影响会逐渐减弱。
+
+
+总的来说，Prompt Tuning 通过一种端到端的方式，在连续且可微的参数空间里自动寻找合适的 prompt，取代了以前在离散空间里手动或自动设计提示词的做法。这种方法让 Prompt Tuning 在超大模型（比如 10B 级别的模型）上表现得和全量微调差不多好（虽然在小模型上效果稍微差一点）。
+
+----
+
 一句话总结什么事Prompt-tuning：
 Prompt-tuning is an efficient, low-cost way of adapting an AI foundation model to new downstream tasks without retraining the model and updating its weights.\
 **Prompt-tuning是一种高效的，低成本的，针对下游任务微调AI模型，而不需要重新训练模糊和更新模型参数的方法。**
