@@ -1,0 +1,34 @@
+# LoRA 微调项目依赖
+# ===================
+# 安装命令：pip install -r requirements.txt
+
+# 核心深度学习框架
+torch>=2.0.0
+torchvision>=0.15.0
+
+# HuggingFace 生态系统
+transformers>=4.35.0
+datasets>=2.14.0
+peft>=0.7.0              # 参数高效微调库（含 LoRA 实现）
+accelerate>=0.24.0       # 加速训练
+tokenizers>=0.15.0
+
+# 量化工具（QLoRA 支持）
+bitsandbytes>=0.41.0     # 8-bit/4-bit 量化
+
+# 训练工具
+scipy>=1.11.0            # 科学计算
+numpy>=1.24.0
+pandas>=2.0.0
+
+# 评估指标
+evaluate>=0.4.1
+rouge-score>=0.1.2
+sacrebleu>=2.3.1
+
+# 可视化和日志
+tensorboard>=2.14.0
+tqdm>=4.66.0
+
+# 开发工具
+pytest>=7.4.0            # 测试框架

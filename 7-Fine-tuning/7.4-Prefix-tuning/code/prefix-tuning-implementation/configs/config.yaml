@@ -1,0 +1,33 @@
+# Prefix-tuning 配置示例
+
+# 模型配置
+model_name_or_path: "gpt2"  # 或 "facebook/bart-base"
+model_type: "causal"  # 'causal' 用于 GPT-2, 'seq2seq' 用于 BART
+
+# 前缀配置
+prefix_length: 20  # 前缀长度，推荐 10-30
+num_layers: null  # null 表示所有层
+hidden_size: null  # null 表示使用模型的隐藏层维度
+bottleneck_size: 512  # 重参数化瓶颈层大小
+dropout: 0.1
+prefix_projection: true  # 使用重参数化技巧
+
+# 训练配置
+learning_rate: 5e-4
+num_train_epochs: 10
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4
+warmup_ratio: 0.1
+max_grad_norm: 1.0
+weight_decay: 0.01
+
+# 输出配置
+output_dir: "./output"
+logging_steps: 10
+save_steps: 500
+eval_steps: 500
+
+# 其他配置
+fp16: false  # 混合精度训练
+seed: 42
+device: "cuda"  # 或 "cpu"

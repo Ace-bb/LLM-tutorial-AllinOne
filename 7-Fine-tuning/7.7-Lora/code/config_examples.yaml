@@ -1,0 +1,230 @@
+# LoRA 微调配置示例
+# ===================
+# 本文件包含不同场景下的 LoRA 配置示例
+
+# ============================================
+# 配置 1: 7B 模型通用配置（推荐起点）
+# ============================================
+lora_config_7b_base:
+  model: "meta-llama/Llama-2-7b-hf"
+  lora:
+    r: 16
+    alpha: 32              # alpha = 2 * r
+    dropout: 0.05
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+    bias: "none"
+  training:
+    learning_rate: 2.0e-4
+    batch_size: 4
+    gradient_accumulation: 4
+    epochs: 1
+    max_seq_length: 512
+    warmup_ratio: 0.03
+    lr_scheduler: "cosine"
+  hardware:
+    gpu: "1x A10G (24GB)"
+    estimated_vram: "~16GB"
+    estimated_time: "~2 hours (Alpaca 52k)"
+
+
+# ============================================
+# 配置 2: 7B 模型高性能配置（所有线性层）
+# ============================================
+lora_config_7b_full:
+  model: "meta-llama/Llama-2-7b-hf"
+  lora:
+    r: 32
+    alpha: 64
+    dropout: 0.1
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+      - "gate_proj"
+      - "up_proj"
+      - "down_proj"      # 包含 MLP 层
+    bias: "none"
+  training:
+    learning_rate: 1.0e-4
+    batch_size: 2
+    gradient_accumulation: 8
+    epochs: 1
+    max_seq_length: 1024
+  hardware:
+    gpu: "1x A10G (24GB)"
+    estimated_vram: "~20GB"
+    notes: "性能最佳，显存占用较高"
+
+
+# ============================================
+# 配置 3: QLoRA 配置（节省显存）
+# ============================================
+qlora_config_7b:
+  model: "meta-llama/Llama-2-7b-hf"
+  quantization:
+    load_in_4bit: true
+    bnb_4bit_quant_type: "nf4"
+    bnb_4bit_compute_dtype: "float16"
+    bnb_4bit_use_double_quant: true
+  lora:
+    r: 16
+    alpha: 32
+    dropout: 0.05
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+  training:
+    learning_rate: 2.0e-4
+    batch_size: 4
+    gradient_accumulation: 4
+    epochs: 1
+  hardware:
+    gpu: "1x RTX 4090 (24GB)"
+    estimated_vram: "~14GB"
+    notes: "适合消费级显卡"
+
+
+# ============================================
+# 配置 4: 13B 模型配置
+# ============================================
+lora_config_13b:
+  model: "meta-llama/Llama-2-13b-hf"
+  lora:
+    r: 32
+    alpha: 64
+    dropout: 0.1
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+      - "gate_proj"
+      - "up_proj"
+      - "down_proj"
+  training:
+    learning_rate: 1.0e-4
+    batch_size: 2
+    gradient_accumulation: 8
+    epochs: 1
+    max_seq_length: 1024
+  hardware:
+    gpu: "2x A100 (40GB)"
+    estimated_vram: "~30GB per GPU"
+    estimated_time: "~4 hours"
+
+
+# ============================================
+# 配置 5: 70B 模型 QLoRA 配置
+# ============================================
+qlora_config_70b:
+  model: "meta-llama/Llama-2-70b-hf"
+  quantization:
+    load_in_4bit: true
+    bnb_4bit_quant_type: "nf4"
+    bnb_4bit_compute_dtype: "float16"
+  lora:
+    r: 64                  # 大模型使用更大的 r
+    alpha: 128
+    dropout: 0.1
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+      - "gate_proj"
+      - "up_proj"
+      - "down_proj"
+  training:
+    learning_rate: 1.0e-4
+    batch_size: 1
+    gradient_accumulation: 16
+    epochs: 1
+  hardware:
+    gpu: "2x A100 (80GB) 或 4x A10G"
+    estimated_vram: "~48GB (2x 24GB)"
+    notes: "70B 模型需要多卡或大显存"
+
+
+# ============================================
+# 配置 6: 小数据集防过拟合配置
+# ============================================
+lora_config_small_data:
+  # 适用于数据量 < 1000 的场景
+  model: "meta-llama/Llama-2-7b-hf"
+  lora:
+    r: 8                   # 较小的 r
+    alpha: 16
+    dropout: 0.2           # 较高的 dropout
+    target_modules:
+      - "q_proj"
+      - "v_proj"           # 仅关键模块
+  training:
+    learning_rate: 1.0e-4
+    batch_size: 4
+    gradient_accumulation: 4
+    epochs: 1              # 单轮，避免过拟合
+    max_seq_length: 512
+  notes: "小数据集需要更强的正则化"
+
+
+# ============================================
+# 配置 7: LoRA+ 配置（最新优化）
+# ============================================
+loraplus_config:
+  model: "meta-llama/Llama-2-7b-hf"
+  lora:
+    r: 16
+    alpha: 32
+    dropout: 0.05
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+    use_rslora: true       # 启用秩稳定 LoRA
+  training:
+    # LoRA+ 关键：A 和 B 矩阵使用不同学习率
+    learning_rate: 1.0e-4  # B 矩阵学习率
+    loraplus_lr_ratio: 16  # A 矩阵学习率 = lr * ratio
+    batch_size: 4
+    gradient_accumulation: 4
+    epochs: 1
+  hardware:
+    gpu: "1x A10G"
+  notes: "LoRA+ 可提升 1-2% 性能，训练速度 2x"
+
+
+# ============================================
+# 调参快速参考
+# ============================================
+tuning_guide:
+  # 秩 r 选择
+  rank_selection:
+    small_model: "r=4-8 (<1B 参数)"
+    medium_model: "r=8-16 (1B-7B 参数)"
+    large_model: "r=16-32 (7B-13B 参数)"
+    xl_model: "r=32-64 (>13B 参数)"
+  
+  # 学习率选择
+  learning_rate_selection:
+    standard_lora: "1e-4 ~ 2e-4"
+    lora_8bit: "1e-3 ~ 2e-3"
+    qlora_4bit: "1e-4 ~ 1e-3"
+    loraplus_b: "1e-4"
+    loraplus_a: "1e-3 (16x B)"
+  
+  # Dropout 选择
+  dropout_selection:
+    small_dataset: "0.1-0.2 (<1k 样本)"
+    medium_dataset: "0.05-0.1 (1k-10k 样本)"
+    large_dataset: "0.0-0.05 (>10k 样本)"
+  
+  # Alpha 规则
+  alpha_rule: "alpha = 2 * r (保持 alpha/r = 2)"

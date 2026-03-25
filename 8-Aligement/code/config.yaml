@@ -1,0 +1,162 @@
+# 大模型强化学习训练配置
+# 包含 PPO、DPO、ORPO、SimPO 的推荐超参数
+
+# ==================== 通用配置 ====================
+model:
+  # 基础模型路径 (HuggingFace 格式)
+  base_model: "meta-llama/Llama-2-7b-hf"
+  # 模型最大序列长度
+  max_length: 512
+  # 分词器填充 token
+  pad_token_id: 0
+  # 设备配置
+  device: "cuda"
+  # 混合精度训练
+  fp16: true
+  # 梯度检查点
+  gradient_checkpointing: true
+
+data:
+  # 训练数据路径
+  train_data_path: "data/train.jsonl"
+  # 验证数据路径
+  val_data_path: "data/val.jsonl"
+  # 批次大小
+  batch_size: 4
+  # 梯度累积步数
+  gradient_accumulation_steps: 4
+  # 数据加载 worker 数量
+  num_workers: 4
+  # 打乱数据
+  shuffle: true
+
+training:
+  # 训练轮数
+  num_epochs: 3
+  # 学习率
+  learning_rate: 5.0e-6
+  # 学习率调度器类型
+  lr_scheduler_type: "cosine"
+  # 预热比例
+  warmup_ratio: 0.1
+  # 权重衰减
+  weight_decay: 0.01
+  # 最大梯度范数
+  max_grad_norm: 1.0
+  # 保存步数
+  save_steps: 500
+  # 日志步数
+  logging_steps: 50
+  # 输出目录
+  output_dir: "outputs"
+  # 随机种子
+  seed: 42
+
+# ==================== PPO 配置 ====================
+# 推荐调参范围:
+# - clip_epsilon: 0.1-0.3
+# - value_coeff: 0.1-0.5
+# - entropy_coeff: 0.001-0.1
+# - 学习率：1e-6 到 1e-4
+ppo:
+  # PPO-Clip 的 epsilon 参数
+  clip_epsilon: 0.2
+  # Value loss 系数
+  value_coeff: 0.5
+  # Entropy bonus 系数
+  entropy_coeff: 0.01
+  # GAE 的 lambda 参数
+  gae_lambda: 0.95
+  # 折扣因子 gamma
+  gamma: 0.99
+  # PPO 更新轮数 (每个 batch 更新几次)
+  ppo_epochs: 4
+  # mini-batch 大小
+  mini_batch_size: 1
+  # Value loss 类型 (huber 或 mse)
+  value_loss_type: "mse"
+  # Huber delta (如果 value_loss_type=huber)
+  huber_delta: 1.0
+  # 是否 clip value
+  clip_value: true
+  # value clip 范围
+  value_clip_epsilon: 0.2
+  # 奖励标准化
+  normalize_advantage: true
+  # 学习率 (PPO 通常用较小的学习率)
+  learning_rate: 1.0e-5
+
+# ==================== DPO 配置 ====================
+# 推荐调参范围:
+# - beta: 0.1-0.5
+# - 学习率：5e-7 到 5e-6
+# - batch size: 16-64
+dpo:
+  # DPO 的 beta 参数 (控制 KL 散度惩罚)
+  beta: 0.1
+  # 标签平滑
+  label_smoothing: 0.0
+  # 参考模型路径 (如果为 null 则使用初始策略模型)
+  ref_model_path: null
+  # 是否冻结参考模型
+  freeze_ref_model: true
+  # 损失类型 (sigmoid 或 hinge)
+  loss_type: "sigmoid"
+  # 学习率
+  learning_rate: 5.0e-7
+  # 是否使用加权损失
+  use_weighted_loss: false
+
+# ==================== ORPO 配置 ====================
+# 推荐调参范围:
+# - lambda: 0.3-0.7
+# - beta: 0.05-0.2
+orpo:
+  # OR 损失权重
+  lambda: 0.5
+  # beta 参数 (温度)
+  beta: 0.1
+  # 是否包含 SFT 损失
+  include_sft_loss: true
+  # SFT 损失权重 (如果 include_sft_loss=true)
+  sft_weight: 1.0
+  # 学习率
+  learning_rate: 5.0e-7
+
+# ==================== SimPO 配置 ====================
+# 推荐调参范围:
+# - gamma: 0.3-0.7
+# - beta: 0.05-0.2
+simpo:
+  # Target margin γ
+  gamma: 0.5
+  # beta 参数
+  beta: 0.1
+  # 长度归一化 (平均 log 概率)
+  use_length_norm: true
+  # 学习率
+  learning_rate: 5.0e-7
+
+# ==================== Reward Model 配置 ====================
+reward_model:
+  # 模型类型 (classifier 或 regression)
+  model_type: "classifier"
+  # 分类头隐藏层维度
+  hidden_dim: 256
+  # Dropout 比例
+  dropout: 0.1
+  # 学习率
+  learning_rate: 1.0e-5
+  # 批次大小
+  batch_size: 16
+
+# ==================== WandB 日志配置 ====================
+wandb:
+  # 是否启用
+  enabled: true
+  # 项目名称
+  project: "llm-rl"
+  # 运行名称
+  run_name: null
+  # 实体
+  entity: null
